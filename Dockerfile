@@ -49,7 +49,7 @@ RUN pip install boto3 addict tqdm regex pyyaml opencv-python tensorboardX
 RUN export CUDA_HOME="/usr/local/cuda"
 
 # Install pytorch
-RUN conda install -y pytorch torchvision  -c pytorch
+RUN conda install -y pytorch=1.0.1 torchvision cudatoolkit=10.0 -c pytorch && conda clean -ya
 
 
 
@@ -67,3 +67,12 @@ WORKDIR $STAGE_DIR/apex
 RUN python setup.py install --cuda_ext --cpp_ext
 WORKDIR $STAGE_DIR
 RUN rm -rf apex
+
+RUN git clone https://github.com/xvjiarui/lintel.git && \
+    cd lintel && pip install . && \
+    cd .. && rm -rf lintel
+
+RUN git clone https://github.com/v-wewei/Pytorch-Correlation-extension.git && \
+    cd Pytorch-Correlation-extension && python setup.py install && \
+    cd .. && rm -rf Pytorch-Correlation-extension
+    
