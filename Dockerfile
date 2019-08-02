@@ -31,12 +31,12 @@ RUN export LIBRARY_PATH=/usr/local/lib:$LIBRARY_PATH
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
 # Get Conda-ified Python.
-#RUN echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh && \
-#    wget --quiet https://repo.continuum.io/archive/Anaconda3-5.1.0-Linux-x86_64.sh -O ~/anaconda.sh && \
-#    sh ~/anaconda.sh -b -p /opt/conda && \
-#    rm ~/anaconda.sh
+RUN echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh && \
+    wget --quiet https://repo.continuum.io/archive/Anaconda3-5.1.0-Linux-x86_64.sh -O ~/anaconda.sh && \
+    sh ~/anaconda.sh -b -p /opt/conda && \
+    rm ~/anaconda.sh
 
-ENV PATH /opt/miniconda/bin:$PATH
+#ENV PATH /opt/miniconda/bin:$PATH
 # Install general libraries
 RUN conda install -y python=3.6 numpy pyyaml scipy ipython mkl scikit-learn matplotlib pandas setuptools Cython h5py graphviz
 RUN conda install -y mkl-include cmake cffi typing cython
