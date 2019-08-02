@@ -39,7 +39,6 @@ RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 ENV PATH /opt/miniconda/bin:$PATH
 # Install general libraries
 RUN conda install -y python=3.6 numpy pyyaml scipy ipython mkl scikit-learn matplotlib pandas setuptools Cython h5py graphviz
-RUN conda clean -ya
 RUN conda install -y mkl-include cmake cffi typing cython
 RUN conda install -y -c mingfeima mkldnn
 RUN pip install boto3 addict tqdm regex pyyaml opencv-python tensorboardX
@@ -49,7 +48,7 @@ RUN pip install boto3 addict tqdm regex pyyaml opencv-python tensorboardX
 RUN export CUDA_HOME="/usr/local/cuda"
 
 # Install pytorch
-RUN conda install -y pytorch=1.0.1 torchvision cudatoolkit=10.0 -c pytorch && conda clean -ya
+RUN conda install -y pytorch=1.0.1 torchvision cudatoolkit=10.0 -c pytorch 
 
 
 
