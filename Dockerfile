@@ -3,7 +3,6 @@ FROM mcr.microsoft.com/azureml/base-gpu:latest
 ENV STAGE_DIR=/root/gpu/install 
 RUN mkdir -p $STAGE_DIR
 
-
 # Install basic dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
         --allow-change-held-packages \
@@ -18,11 +17,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libnccl2 \
         libnccl-dev \
         ca-certificates \
-        libjpeg-dev
+        libjpeg-dev \
+        htop \ 
+        apt-utils
 
 # Install lib for video
 RUN apt-get update && apt-get install -y software-properties-common
-RUN add-apt-repository -y ppa:jonathonf/ffmpeg-3
+# RUN add-apt-repository -y ppa:jonathonf/ffmpeg-3
 RUN apt update && apt-get install -y libavformat-dev libavcodec-dev libswscale-dev libavutil-dev libswresample-dev libsm6 
 RUN apt-get install -y ffmpeg
 RUN export LIBRARY_PATH=/usr/local/lib:$LIBRARY_PATH
@@ -48,7 +49,7 @@ RUN pip install boto3 addict tqdm regex pyyaml opencv-python tensorboardX
 RUN export CUDA_HOME="/usr/local/cuda"
 
 # Install pytorch
-RUN conda install -y pytorch=1.0.1 torchvision cudatoolkit=10.0 -c pytorch 
+RUN conda install -y pytorch torchvision  -c pytorch
 
 
 
@@ -61,7 +62,8 @@ WORKDIR $STAGE_DIR
 RUN pip uninstall -y apex || :
 # SHA is something the user can touch to force recreation of this Docker layer,
 # and therefore force cloning of the latest version of Apex
-RUN SHA=ToUcHMe git clone https://github.com/NVIDIA/apex.git
+# RUN SHA=ToUcHMe git clone https://github.com/NVIDIA/apex.git
+RUN git clone https://github.com/NVIDIA/apex
 WORKDIR $STAGE_DIR/apex
 RUN python setup.py install --cuda_ext --cpp_ext
 WORKDIR $STAGE_DIR
@@ -71,7 +73,6 @@ RUN git clone https://github.com/xvjiarui/lintel.git && \
     cd lintel && pip install . && \
     cd .. && rm -rf lintel
 
-RUN git clone https://github.com/v-wewei/Pytorch-Correlation-extension.git && \
-    cd Pytorch-Correlation-extension && python setup.py install && \
-    cd .. && rm -rf Pytorch-Correlation-extension
-    
+#RUN git clone https://github.com/v-wewei/Pytorch-Correlation-extension.git && \
+#    cd Pytorch-Correlation-extension && python setup.py install && \
+#    cd .. && rm -rf Pytorch-Correlation-extension
