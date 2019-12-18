@@ -37,12 +37,13 @@ RUN echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh && \
     sh ~/anaconda.sh -b -p /opt/conda && \
     rm ~/anaconda.sh
 
-ENV PATH /opt/miniconda/bin:$PATH
+# ENV PATH /opt/miniconda/bin:$PATH
 # Install general libraries
 RUN conda install -y python=3.6 numpy pyyaml scipy ipython mkl scikit-learn matplotlib pandas setuptools Cython h5py graphviz
+RUN conda clean -ya
 RUN conda install -y mkl-include cmake cffi typing cython
 RUN conda install -y -c mingfeima mkldnn
-RUN pip install boto3 addict tqdm regex pyyaml opencv-python tensorboardX
+RUN pip install boto3 addict tqdm regex pyyaml opencv-python tensorboardX torchsummary
 
 
 # Set CUDA_ROOT
