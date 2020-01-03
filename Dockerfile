@@ -38,6 +38,8 @@ RUN wget --quiet https://repo.continuum.io/archive/Anaconda3-5.1.0-Linux-x86_64.
     rm ~/anaconda.sh && \
     echo "export PATH=/opt/conda/bin:$PATH" >> ~/.bashrc && \
     echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh
+    
+RUN sudo -s source ~/.bashrc
 
 # ENV PATH /opt/miniconda/bin:$PATH
 # Install general libraries
