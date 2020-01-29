@@ -36,8 +36,11 @@ RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 RUN wget --quiet https://repo.continuum.io/archive/Anaconda3-5.1.0-Linux-x86_64.sh -O ~/anaconda.sh && \
     sh ~/anaconda.sh -b -p /opt/conda && \
     rm ~/anaconda.sh && \
-    echo "export PATH=/opt/conda/bin:$PATH" >> ~/.bashrc && \
-    echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh
+    ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
+    echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc && \
+    echo "conda activate base" >> ~/.bashrc
+#     echo "export PATH=/opt/conda/bin:$PATH" >> ~/.bashrc && \
+#     echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh
     
 RUN /bin/bash -c "source ~/.bashrc"
 
