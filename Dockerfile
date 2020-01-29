@@ -44,7 +44,7 @@ RUN wget --quiet https://repo.continuum.io/archive/Anaconda3-5.1.0-Linux-x86_64.
     
 RUN /bin/bash -c "source ~/.bashrc"
 
-# ENV PATH /opt/miniconda/bin:$PATH
+ENV PATH /opt/conda/bin:$PATH
 # Install general libraries
 RUN /opt/conda/bin/conda install -y python=3.6 numpy pyyaml scipy ipython mkl scikit-learn matplotlib pandas setuptools Cython h5py graphviz
 RUN /opt/conda/bin/conda clean -ya
