@@ -70,7 +70,7 @@ RUN conda install -y pytorch torchvision cudatoolkit=10.0 -c pytorch
 
 
 # Install horovod
-RUN HOROVOD_GPU_ALLREDUCE=NCCL pip install --no-cache-dir horovod==0.16.1
+RUN HOROVOD_GPU_ALLREDUCE=NCCL pip install --no-cache-dir horovod==0.18.2
 # RUN HOROVOD_GPU_ALLREDUCE=MPI HOROVOD_GPU_ALLGATHER=MPI HOROVOD_GPU_BROADCAST=MPI pip install --no-cache-dir horovod
 # RUN ldconfig /usr/local/cuda/targets/x86_64-linux/lib/stubs && \
 #     HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_GPU_BROADCAST=NCCL pip install --no-cache-dir horovod && \
@@ -89,10 +89,15 @@ RUN python setup.py install --cuda_ext --cpp_ext
 WORKDIR $STAGE_DIR
 RUN rm -rf apex
 
-RUN git clone https://github.com/xvjiarui/lintel.git && \
+RUN git clone https://github.com/dukebw/lintel.git && \
     cd lintel && pip install . && \
     cd .. && rm -rf lintel
+# https://github.com/xvjiarui/lintel.git && \
 
 #RUN git clone https://github.com/v-wewei/Pytorch-Correlation-extension.git && \
 #    cd Pytorch-Correlation-extension && python setup.py install && \
 #    cd .. && rm -rf Pytorch-Correlation-extension
+RUN echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-xenial-prod/ xenial main" > azure.list && \
+    cp ./azure.list /etc/apt/sources.list.d/ && \
+    apt-key adv --keyserver packages.microsoft.com --recv-keys EB3E94ADBE1229CF && \
+    apt-get update && apt-get install azcopy
