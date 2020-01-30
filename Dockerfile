@@ -65,15 +65,15 @@ RUN pip install --upgrade pip
 RUN export CUDA_HOME="/usr/local/cuda"
 
 # Install pytorch
-RUN conda install -y pytorch=1.3 torchvision -c pytorch
+RUN conda install -y pytorch torchvision cudatoolkit=10.0 -c pytorch
 
 
 # Install horovod
-# RUN HOROVOD_GPU_ALLREDUCE=NCCL pip install --no-cache-dir horovod
+RUN HOROVOD_GPU_ALLREDUCE=NCCL pip install --no-cache-dir horovod
 # RUN HOROVOD_GPU_ALLREDUCE=MPI HOROVOD_GPU_ALLGATHER=MPI HOROVOD_GPU_BROADCAST=MPI pip install --no-cache-dir horovod
-RUN ldconfig /usr/local/cuda/targets/x86_64-linux/lib/stubs && \
-    HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_GPU_BROADCAST=NCCL pip install --no-cache-dir horovod && \
-    ldconfig
+# RUN ldconfig /usr/local/cuda/targets/x86_64-linux/lib/stubs && \
+#     HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_GPU_BROADCAST=NCCL pip install --no-cache-dir horovod && \
+#     ldconfig
 
 
 # Install apex
