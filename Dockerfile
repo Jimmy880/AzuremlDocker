@@ -26,6 +26,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         g++ \
         gcc \
         apt-utils \
+        libosmesa6-dev \
         net-tools
 
 # Install lib for video
@@ -69,7 +70,7 @@ RUN conda install -y pytorch torchvision cudatoolkit=10.0 -c pytorch
 
 
 # Install horovod
-RUN HOROVOD_GPU_ALLREDUCE=NCCL pip install --no-cache-dir horovod
+RUN HOROVOD_GPU_ALLREDUCE=NCCL pip install --no-cache-dir horovod==0.16.1
 # RUN HOROVOD_GPU_ALLREDUCE=MPI HOROVOD_GPU_ALLGATHER=MPI HOROVOD_GPU_BROADCAST=MPI pip install --no-cache-dir horovod
 # RUN ldconfig /usr/local/cuda/targets/x86_64-linux/lib/stubs && \
 #     HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_GPU_BROADCAST=NCCL pip install --no-cache-dir horovod && \
