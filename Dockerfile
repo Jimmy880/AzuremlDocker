@@ -26,7 +26,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         g++ \
         gcc \
         apt-utils \
-        net-tools && \
+        net-tools \
         apt-get autoremove
 
 # Install lib for video
