@@ -26,8 +26,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         g++ \
         gcc \
         apt-utils \
-        net-tools \
-        apt-get autoremove
+        net-tools
 
 # Install lib for video
 RUN apt-get update && apt-get install -y software-properties-common
