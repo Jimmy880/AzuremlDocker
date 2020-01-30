@@ -7,6 +7,9 @@ RUN mkdir -p $STAGE_DIR
 RUN apt-get update && apt-get install -y --no-install-recommends \
         --allow-change-held-packages \
         build-essential \
+        totools-dev \
+        rsync \
+        curl \
         cmake \
         wget \
         vim \
@@ -19,7 +22,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates \
         libjpeg-dev \
         htop \ 
-        apt-utils
+        sudo \
+        g++ \
+        gcc \
+        apt-utils \
+        net-tools && \
+        apt-get autoremove
 
 # Install lib for video
 RUN apt-get update && apt-get install -y software-properties-common
