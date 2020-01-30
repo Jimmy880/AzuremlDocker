@@ -7,7 +7,7 @@ RUN mkdir -p $STAGE_DIR
 RUN apt-get update && apt-get install -y --no-install-recommends \
         --allow-change-held-packages \
         build-essential \
-        totools-dev \
+        autotools-dev \
         rsync \
         curl \
         cmake \
