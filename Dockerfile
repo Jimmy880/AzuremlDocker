@@ -32,14 +32,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Install lib for video
 RUN apt-get update && apt-get install -y software-properties-common
 # RUN add-apt-repository -y ppa:jonathonf/ffmpeg-3
-# RUN add-apt-repository -y ppa:jonathonf/ffmpeg-4
-RUN sudo add-apt-repository -y ppa:mc3man/trusty-media
-
+RUN add-apt-repository -y ppa:jonathonf/ffmpeg-4
 RUN apt update && apt-get install -y libavformat-dev libavcodec-dev libswscale-dev libavutil-dev libswresample-dev libsm6 
 RUN apt-get install -y ffmpeg
 RUN export LIBRARY_PATH=/usr/local/lib:$LIBRARY_PATH
-
-RUN apt-get -y install frei0r-plugins
 
 # Set timezone
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
