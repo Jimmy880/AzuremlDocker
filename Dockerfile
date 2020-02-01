@@ -55,6 +55,7 @@ RUN /bin/bash -c "source ~/.bashrc"
 
 ENV PATH /opt/conda/bin:$PATH
 # Install general libraries
+RUN conda update -n base conda
 RUN conda install -y python=3.6 numpy pyyaml scipy ipython mkl scikit-learn matplotlib pandas setuptools Cython h5py graphviz
 RUN conda clean -ya
 RUN conda install -y mkl-include cmake cffi typing cython
