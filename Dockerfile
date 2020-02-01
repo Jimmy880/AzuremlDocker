@@ -40,22 +40,24 @@ RUN export LIBRARY_PATH=/usr/local/lib:$LIBRARY_PATH
 # Set timezone
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
-# Get Conda-ified Python.
-# RUN echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh && \
-RUN wget --quiet https://repo.continuum.io/archive/Anaconda3-5.1.0-Linux-x86_64.sh -O ~/anaconda.sh && \
-    sh ~/anaconda.sh -b -p /opt/conda && \
-    rm ~/anaconda.sh && \
-    ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
-    echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc && \
-    echo "conda activate base" >> ~/.bashrc
-#     echo "export PATH=/opt/conda/bin:$PATH" >> ~/.bashrc && \
-#     echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh
+# # Get Conda-ified Python.
+# # RUN echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh && \
+# RUN wget --quiet https://repo.continuum.io/archive/Anaconda3-5.1.0-Linux-x86_64.sh -O ~/anaconda.sh && \
+#     sh ~/anaconda.sh -b -p /opt/conda && \
+#     rm ~/anaconda.sh && \
+#     ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
+#     echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc && \
+#     echo "conda activate base" >> ~/.bashrc
+# #     echo "export PATH=/opt/conda/bin:$PATH" >> ~/.bashrc && \
+# #     echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh
     
-RUN /bin/bash -c "source ~/.bashrc"
+# RUN /bin/bash -c "source ~/.bashrc"
+# ENV PATH /opt/conda/bin:$PATH
+# RUN conda update -n base conda
 
-ENV PATH /opt/conda/bin:$PATH
+ENV PATH /opt/miniconda/bin:$PATH
+
 # Install general libraries
-RUN conda update -n base conda
 RUN conda install -y python=3.6 numpy pyyaml scipy ipython mkl scikit-learn matplotlib pandas setuptools Cython h5py graphviz
 RUN conda clean -ya
 RUN conda install -y mkl-include cmake cffi typing cython
@@ -68,8 +70,9 @@ RUN pip install --upgrade pip
 RUN export CUDA_HOME="/usr/local/cuda"
 
 # Install pytorch
-RUN conda install -y pytorch torchvision=0.4.2 cudatoolkit=10.0 -c pytorch
-RUN conda install -y -c conda-forge pillow=6.2.1
+# RUN conda install -y pytorch torchvision=0.4.2 cudatoolkit=10.0 -c pytorch
+# RUN conda install -y -c conda-forge pillow=6.2.1
+RUN conda install -y pytorch torchvision cudatoolkit=10.0 -c pytorch
 
 
 # Install horovod
