@@ -1,5 +1,80 @@
 # Tag: nvidia/cuda:10.0-cudnn7-devel-ubuntu16.04
-FROM mcr.microsoft.com/azureml/base-gpu:latest 
+
+
+FROM nvidia/cuda@sha256:853e4cbf7c48bbfa04977bc5998d4b60f3310692446184230649d7fdc053fd44
+
+USER root:root
+
+ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
+ENV DEBIAN_FRONTEND noninteractive
+ENV LD_LIBRARY_PATH "/usr/local/cuda/extras/CUPTI/lib64:${LD_LIBRARY_PATH}"
+
+# Install Common Dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    # SSH and RDMA
+    libmlx4-1 \
+    libmlx5-1 \
+    librdmacm1 \
+    libibverbs1 \
+    libmthca1 \
+    libdapl2 \
+    dapl2-utils \
+    openssh-client \
+    openssh-server \
+    iproute2 && \
+    # Others
+    apt-get install -y \
+    build-essential \
+    bzip2 \
+    git=1:2.7.4-0ubuntu1.6 \
+    wget \
+    cpio && \
+    apt-get clean -y && \
+    rm -rf /var/lib/apt/lists/*
+
+# # Conda Environment
+# ENV MINICONDA_VERSION 4.5.11
+# ENV PATH /opt/miniconda/bin:$PATH
+# RUN wget -qO /tmp/miniconda.sh https://repo.continuum.io/miniconda/Miniconda3-${MINICONDA_VERSION}-Linux-x86_64.sh && \
+#     bash /tmp/miniconda.sh -bf -p /opt/miniconda && \
+#     conda clean -ay && \
+#     rm -rf /opt/miniconda/pkgs && \
+#     rm /tmp/miniconda.sh && \
+#     find / -type d -name __pycache__ | xargs rm -rf
+
+# Get Conda-ified Python.
+# RUN echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh && \
+RUN wget --quiet https://repo.continuum.io/archive/Anaconda3-5.1.0-Linux-x86_64.sh -O ~/anaconda.sh && \
+    sh ~/anaconda.sh -b -p /opt/conda && \
+    rm ~/anaconda.sh && \
+    ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
+    echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc && \
+#     echo "conda activate base" >> ~/.bashrc
+#     echo "export PATH=/opt/conda/bin:$PATH" >> ~/.bashrc && \
+#     echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh
+    
+# RUN /bin/bash -c "source ~/.bashrc"
+ENV PATH /opt/conda/bin:$PATH
+RUN conda update -n base conda
+
+
+# Intel MPI installation
+ENV INTEL_MPI_VERSION 2018.3.222
+ENV PATH $PATH:/opt/intel/compilers_and_libraries/linux/mpi/bin64
+RUN cd /tmp && \
+    wget -q "http://registrationcenter-download.intel.com/akdlm/irc_nas/tec/13063/l_mpi_${INTEL_MPI_VERSION}.tgz" && \
+    tar zxvf l_mpi_${INTEL_MPI_VERSION}.tgz && \
+    sed -i -e 's/^ACCEPT_EULA=decline/ACCEPT_EULA=accept/g' /tmp/l_mpi_${INTEL_MPI_VERSION}/silent.cfg && \
+    cd /tmp/l_mpi_${INTEL_MPI_VERSION} && \
+    ./install.sh -s silent.cfg --arch=intel64 && \
+    cd / && \
+    rm -rf /tmp/l_mpi_${INTEL_MPI_VERSION}* && \
+    rm -rf /opt/intel/compilers_and_libraries_${INTEL_MPI_VERSION}/linux/mpi/intel64/lib/debug* && \
+    echo "source /opt/intel/compilers_and_libraries_${INTEL_MPI_VERSION}/linux/mpi/intel64/bin/mpivars.sh" >> ~/.bashrc
+
+
+# FROM mcr.microsoft.com/azureml/base-gpu:latest 
 ENV STAGE_DIR=/root/gpu/install 
 RUN mkdir -p $STAGE_DIR
 
@@ -59,7 +134,7 @@ RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
 # Install general libraries
 RUN conda install -y python=3.6 numpy pyyaml scipy ipython mkl scikit-learn matplotlib pandas setuptools Cython h5py graphviz
-RUN conda clean -ay
+RUN conda clean -ya
 RUN conda install -y mkl-include cmake cffi typing cython
 RUN conda install -y -c mingfeima mkldnn
 RUN pip install boto3 addict tqdm regex pyyaml opencv-python tensorboardX torchsummary
