@@ -130,10 +130,11 @@ RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 # ENV PATH /opt/conda/bin:$PATH
 # RUN conda update -n base conda
 
+# very important!!!!!!!
 RUN ln -s /opt/miniconda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
     echo ". /opt/miniconda/etc/profile.d/conda.sh" >> ~/.bashrc && \
     echo "export PATH=/opt/miniconda/bin:$PATH" >> ~/.bashrc
-
+# very important!!!!!!!
 ENV PATH /opt/miniconda/bin:$PATH
 RUN conda update -n base conda
 
@@ -150,9 +151,9 @@ RUN pip install --upgrade pip
 RUN export CUDA_HOME="/usr/local/cuda"
 
 # Install pytorch
-RUN conda install -y pytorch torchvision=0.4.2 cudatoolkit=10.0 -c pytorch
-RUN conda install -y -c conda-forge pillow=6.2.1
-RUN pip install pillow==6.2.1
+RUN conda install -y pytorch torchvision cudatoolkit=10.0 -c pytorch
+# RUN conda install -y -c conda-forge pillow=6.2.1
+# RUN pip install pillow==6.2.1
 # RUN conda install -y pytorch torchvision cudatoolkit=10.0 -c pytorch
 
 
