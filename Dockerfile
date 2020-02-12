@@ -151,10 +151,9 @@ RUN pip install --upgrade pip
 RUN export CUDA_HOME="/usr/local/cuda"
 
 # Install pytorch
-RUN conda install -y pytorch torchvision cudatoolkit=10.0 -c pytorch
-# RUN conda install -y -c conda-forge pillow=6.2.1
-# RUN pip install pillow==6.2.1
 # RUN conda install -y pytorch torchvision cudatoolkit=10.0 -c pytorch
+RUN conda install -y pytorch=1.3 torchvision=0.4.2 cudatoolkit=10.0 -c pytorch
+RUN conda install -y -c conda-forge pillow=6.2.1
 
 
 # Install horovod
