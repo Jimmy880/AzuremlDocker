@@ -184,7 +184,8 @@ RUN git clone https://github.com/dukebw/lintel.git && \
 #RUN git clone https://github.com/v-wewei/Pytorch-Correlation-extension.git && \
 #    cd Pytorch-Correlation-extension && python setup.py install && \
 #    cd .. && rm -rf Pytorch-Correlation-extension
-RUN echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-xenial-prod/ xenial main" > azure.list && \
-    cp ./azure.list /etc/apt/sources.list.d/ && \
-    apt-key adv --keyserver packages.microsoft.com --recv-keys EB3E94ADBE1229CF && \
-    apt-get update && apt-get install azcopy
+
+# RUN echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-xenial-prod/ xenial main" > azure.list && \
+#     cp ./azure.list /etc/apt/sources.list.d/ && \
+#     apt-key adv --keyserver packages.microsoft.com --recv-keys EB3E94ADBE1229CF && \
+#     apt-get update && apt-get install azcopy
